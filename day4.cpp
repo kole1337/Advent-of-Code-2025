@@ -90,7 +90,7 @@ int simulate_removal(vector<string>& grid, bool verbose = false) {
         total_removed += removed_this_round;
         
         if (verbose) {
-                 << removed_this_round << " rolls\n";
+                 cout << removed_this_round << " rolls\n";
         }
         
         // Remove all accessible rolls
