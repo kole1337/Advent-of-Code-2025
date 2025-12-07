@@ -79,7 +79,6 @@ int simulate_removal(vector<string>& grid, bool verbose = false) {
     int iteration = 0;
     
     while (true) {
-        // Find all accessible rolls
         vector<pair<int, int>> accessible = find_accessible_positions(grid);
         
         if (accessible.empty()) {
@@ -91,7 +90,6 @@ int simulate_removal(vector<string>& grid, bool verbose = false) {
         total_removed += removed_this_round;
         
         if (verbose) {
-            cout << "\nIteration " << iteration << ": Removing " 
                  << removed_this_round << " rolls\n";
         }
         
@@ -106,7 +104,6 @@ int simulate_removal(vector<string>& grid, bool verbose = false) {
     }
     
     if (verbose && iteration > 5) {
-        cout << "\n... (" << (iteration - 5) << " more iterations)\n";
         cout << "\nFinal state:\n";
         print_grid(grid);
     }
@@ -121,7 +118,6 @@ int main(int argc, char* argv[]) {
         // Read from file
         ifstream file(argv[1]);
         if (!file) {
-            cerr << "Error: Could not open file " << argv[1] << endl;
             return 1;
         }
         
@@ -133,8 +129,6 @@ int main(int argc, char* argv[]) {
         }
         file.close();
     } else {
-        // Read from stdin
-        cout << "Enter the grid (empty line to finish):\n";
         string line;
         while (getline(cin, line)) {
             if (line.empty()) break;
@@ -142,25 +136,13 @@ int main(int argc, char* argv[]) {
         }
     }
     
-    if (grid.empty()) {
-        cout << "No input provided.\n";
-        return 1;
-    }
-    
-    // Part 1: Count initially accessible rolls
-    cout << "=== Part 1 ===" << endl;
     int part1_answer = count_accessible_rolls(grid);
     cout << "Initially accessible rolls: " << part1_answer << endl;
     
-    // Part 2: Simulate removal process
-    cout << "\n=== Part 2 ===" << endl;
-    cout << "Initial state:\n";
-    print_grid(grid);
+
     
-    // Make a copy for simulation
     vector<string> grid_copy = grid;
     int part2_answer = simulate_removal(grid_copy, true);
-    
     cout << "\nTotal rolls removed: " << part2_answer << endl;
     
     return 0;

@@ -101,8 +101,6 @@ int main(int argc, char *argv[]) {
             return 1;
         }
     } else {
-        printf("Usage: %s <input_file>\n", argv[0]);
-        printf("Or enter banks manually (Ctrl+Z then Enter to finish on Windows):\n");
         file = stdin;
     }
     
@@ -113,7 +111,6 @@ int main(int argc, char *argv[]) {
         if (strlen(line) == 0) continue;
         
         unsigned long long max = find_max_joltage(line, batteries_to_select);
-        printf("Bank: %s -> Max joltage: %llu\n", line, max);
         total_joltage += max;
     }
     

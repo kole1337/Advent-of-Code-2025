@@ -10,8 +10,8 @@ import (
 func main() {
 
 	input := `input code`
-total := solvePartTwo(input)
-	fmt.Printf("Grand Total: %d\n", total)
+	total := solvePartTwo(input)
+	fmt.Printf("Solution: %d\n", total)
 }
 
 func solvePartOne(input string) int {
@@ -98,7 +98,7 @@ func solvePartOne(input string) int {
 				res *= n
 			}
 		} else {
-			fmt.Printf("Warning: Problem %d (cols %d-%d) has no operator! Check input alignment.\n", i+1, start, end)
+			fmt.Printf("Problem %d (cols %d-%d) has no operator\n", i+1, start, end)
 		}
 		
 		grandTotal += res

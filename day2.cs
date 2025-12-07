@@ -45,7 +45,7 @@ namespace HelloWorld
                 //string c = w.Substring(0, (b / 2)-1), z = w.Substring((b/2)-1);
                 //Console.Write(c + ", " + z);
 
-                string input = System.IO.File.ReadAllText("C:\\Users\\np3g22\\Downloads\\aoc25\\day2\\day2\\example.txt");
+                string input = System.IO.File.ReadAllText("example.txt");
 
                 long total = 0;
 
