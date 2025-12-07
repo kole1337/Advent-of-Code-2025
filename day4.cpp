@@ -49,26 +49,69 @@ int count_accessible_rolls(const vector<string>& grid) {
     return accessible;
 }
 
-void print_accessible_rolls(const vector<string>& grid) {
+vector<pair<int, int>> find_accessible_positions(const vector<string>& grid) {
+    vector<pair<int, int>> positions;
     int rows = grid.size();
     
-    cout << "\nAccessible rolls marked with 'x':\n";
     for (int i = 0; i < rows; i++) {
         int cols = grid[i].size();
         for (int j = 0; j < cols; j++) {
             if (grid[i][j] == '@') {
                 int adjacent = count_adjacent_rolls(grid, i, j);
                 if (adjacent < 4) {
-                    cout << 'x';
-                } else {
-                    cout << '@';
+                    positions.push_back({i, j});
                 }
-            } else {
-                cout << grid[i][j];
             }
         }
-        cout << '\n';
     }
+    
+    return positions;
+}
+
+void print_grid(const vector<string>& grid) {
+    for (const auto& row : grid) {
+        cout << row << '\n';
+    }
+}
+
+int simulate_removal(vector<string>& grid, bool verbose = false) {
+    int total_removed = 0;
+    int iteration = 0;
+    
+    while (true) {
+        // Find all accessible rolls
+        vector<pair<int, int>> accessible = find_accessible_positions(grid);
+        
+        if (accessible.empty()) {
+            break;
+        }
+        
+        iteration++;
+        int removed_this_round = accessible.size();
+        total_removed += removed_this_round;
+        
+        if (verbose) {
+            cout << "\nIteration " << iteration << ": Removing " 
+                 << removed_this_round << " rolls\n";
+        }
+        
+        // Remove all accessible rolls
+        for (const auto& pos : accessible) {
+            grid[pos.first][pos.second] = '.';
+        }
+        
+        if (verbose && iteration <= 5) {
+            print_grid(grid);
+        }
+    }
+    
+    if (verbose && iteration > 5) {
+        cout << "\n... (" << (iteration - 5) << " more iterations)\n";
+        cout << "\nFinal state:\n";
+        print_grid(grid);
+    }
+    
+    return total_removed;
 }
 
 int main(int argc, char* argv[]) {
@@ -104,13 +147,21 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    // Print the visualization
-    print_accessible_rolls(grid);
+    // Part 1: Count initially accessible rolls
+    cout << "=== Part 1 ===" << endl;
+    int part1_answer = count_accessible_rolls(grid);
+    cout << "Initially accessible rolls: " << part1_answer << endl;
     
-    // Count accessible rolls
-    int accessible = count_accessible_rolls(grid);
+    // Part 2: Simulate removal process
+    cout << "\n=== Part 2 ===" << endl;
+    cout << "Initial state:\n";
+    print_grid(grid);
     
-    cout << "\nTotal accessible rolls: " << accessible << endl;
+    // Make a copy for simulation
+    vector<string> grid_copy = grid;
+    int part2_answer = simulate_removal(grid_copy, true);
+    
+    cout << "\nTotal rolls removed: " << part2_answer << endl;
     
     return 0;
 }

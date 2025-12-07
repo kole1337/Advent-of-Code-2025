@@ -26,14 +26,12 @@ unsigned long long find_max_joltage(char *line, int count) {
     int len = strlen(line);
     int digits_found = 0;
     
-    // Count actual digits in the line
     for (int i = 0; i < len; i++) {
         if (line[i] >= '0' && line[i] <= '9') {
             digits_found++;
         }
     }
     
-    // If we need to select all or more digits than available
     if (count >= digits_found) {
         unsigned long long result = 0;
         for (int i = 0; i < len; i++) {
@@ -44,14 +42,12 @@ unsigned long long find_max_joltage(char *line, int count) {
         return result;
     }
     
-    // Greedy approach: select the largest digits while maintaining order
     char selected[256];
     int selected_count = 0;
-    int skip_count = digits_found - count; // Number of digits to skip
+    int skip_count = digits_found - count; 
     
     int pos = 0;
     while (selected_count < count) {
-        // Find valid digit positions
         int digit_positions[256];
         int digit_count = 0;
         
@@ -61,7 +57,6 @@ unsigned long long find_max_joltage(char *line, int count) {
             }
         }
         
-        // Find the largest digit we can take while leaving enough digits
         int best_pos = -1;
         char best_digit = '0' - 1;
         
@@ -85,7 +80,6 @@ unsigned long long find_max_joltage(char *line, int count) {
     
     selected[selected_count] = '\0';
     
-    // Convert to number
     unsigned long long result = 0;
     for (int i = 0; i < selected_count; i++) {
         result = result * 10 + (selected[i] - '0');
@@ -98,9 +92,8 @@ int main(int argc, char *argv[]) {
     FILE *file;
     char line[1024];
     unsigned long long total_joltage = 0;
-    int batteries_to_select = 12; // Part 2 uses 12 batteries
+    int batteries_to_select = 12;
     
-    // Handle file input
     if (argc > 1) {
         file = fopen(argv[1], "r");
         if (!file) {
@@ -113,9 +106,7 @@ int main(int argc, char *argv[]) {
         file = stdin;
     }
     
-    // Read input line by line
     while (fgets(line, sizeof(line), file)) {
-        // Remove newline if present
         line[strcspn(line, "\n")] = 0;
         line[strcspn(line, "\r")] = 0;
         
